@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <WebServer.h>
+#include <ESPmDNS.h>
 
 // --- Wi-Fi Settings ---
 const char* ssid = "YOUR_WIFI_SSID";          // Put your Wi-Fi name here
@@ -68,6 +69,10 @@ void setup() {
 
   // 1. Connect to Wi-Fi
   WiFi.begin(ssid, password);
+  if (!MDNS.begin("pump")) {
+    Serial.println("Error setting up MDNS responder!");
+  }
+  Serial.println("mDNS responder started: http://pump.local");
   Serial.print("Connecting to WiFi");
 
   while (WiFi.status() != WL_CONNECTED) {
