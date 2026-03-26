@@ -17,24 +17,37 @@ const int buttonPins[] = {
 };
 const int numButtonPins = 4;
 
+const int valveTriggerPin = 26;
+const int pumpTriggerPin = 27;
+
 void setup(){
     Serial.begin(baudRate);
 
     for (int i = 0; i < numButtonPins; i++){
         pinMode(buttonPins[i], INPUT_PULLDOWN);
     };
+
+    pinMode(wlanLedPin, OUTPUT);
+    pinMode(valveTriggerPin, OUTPUT);
+    pinMode(pumpTriggerPin, OUTPUT);
 }
 
 void loop(){
-    Serial.print("Button States (Blue White Green Red): ");
-
-    for (int i = 0; i < numButtonPins; i++) {
-        int buttonState = digitalRead(buttonPins[i]);
-        Serial.print(buttonState);
-        Serial.print(" ");
+    if (digitalRead(blueButtonPin) == HIGH) {
+        digitalWrite(pumpTriggerPin, HIGH);
     }
-    Serial.println();
+
+    if (digitalRead(whiteButtonPin) == HIGH) {
+        digitalWrite(pumpTriggerPin, LOW);
+    }
+
+    if (digitalRead(greenButtonPin) == HIGH) {
+        digitalWrite(valveTriggerPin, HIGH);
+    }
+
+    if (digitalRead(redButtonPin) == HIGH) {
+        digitalWrite(valveTriggerPin, LOW);
+    }
 
     delay(sampleTimeinMs);
-
 }
